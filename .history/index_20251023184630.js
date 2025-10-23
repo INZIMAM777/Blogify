@@ -1,4 +1,4 @@
-//.env initialization
+//.e
 require('dotenv').config();
 
 const path=require('path')

@@ -65,15 +65,15 @@ router.post('/',upload.single('coverImg'),async(req,res)=>{
     console.log("No user found in request.");
     return res.status(401).send("Unauthorized: Please log in first.");
   }
-    // console.log(req.file)
-    // console.log(req.user)
+    console.log(req.file)
+    console.log(req.user)
     const blog=await Blog.create({
         title,
         body,
         createdBy:req.user.id,
         coverUrl:`/uploads/${req.file.filename}`,
     })
-    // console.log(blog)
+    console.log(blog)
     return res.redirect('/');
 })
 

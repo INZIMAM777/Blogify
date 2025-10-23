@@ -1,14 +1,9 @@
-//.env initialization
-require('dotenv').config();
-
 const path=require('path')
 const express=require('express')
 const cookieParser=require('cookie-parser');
 
 const mongoose=require('mongoose');
-// mongoose.connect('mongodb://127.0.0.1:27017/My_Blog2_App')
-mongoose.connect(process.env.MONGO_URL)
-
+mongoose.connect('mongodb://127.0.0.1:27017/My_Blog2_App')
 
 const app=express()
 const PORT=process.env.PORT||8001;

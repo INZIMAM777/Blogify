@@ -1,6 +1,3 @@
-//.env initialization
-require('dotenv').config();
-
 const path=require('path')
 const express=require('express')
 const cookieParser=require('cookie-parser');

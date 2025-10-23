@@ -143,6 +143,6 @@ enctype="multipart/form-data"
 part 4
 --------------------------------------------------------------------------
 -create input for comment, comment chat, create comment model, create router for comment post and get.
--create .env file store common data like PORT,MONGO_URL
+-create .env file 
 
 

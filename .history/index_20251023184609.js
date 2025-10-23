@@ -1,5 +1,4 @@
-//.env initialization
-require('dotenv').config();
+require('dot')
 
 const path=require('path')
 const express=require('express')
