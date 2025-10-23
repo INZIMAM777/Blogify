@@ -1,0 +1,4 @@
+-Initially we have to setup node npm init,index.js,expressjs,path
+- selecting port, npm i nodemon -d=> dev dependencies=> not install deployment
+-view setup,ejs, 1.create user model, using schema pre function, createHmac,
+-schema pre save function using salt 16 bit hmac sha256 generate it from gpt or 

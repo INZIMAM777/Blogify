@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add-Blog Page</title>
+    <%- include('./partials/head') %>
+</head>
+<body>
+    <%- include('./nav.ejs') %>
+    <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-5 col-sm-8">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h3 class="card-title text-center mb-4">Sign In</h3>
+            <form action="/user/signin" method="POST">
+              <div class="mb-3">
+                <label for="title" class="form-label"> Title</label>
+                <input type="text" class="form-control" id="title" name="title" placeholder="Enter Title" required>
+              </div>
+              <div class="mb-3">
+                <label for="coverImg" class="form-label">CoverImg</label>
+                <input type="image" class="form-control" id="cover" name="password" placeholder="Password" required>
+              </div>
+              <button type="submit" class="btn btn-primary w-100">Sign In</button>
+            </form>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    
+    <%- include('./partials/script') %>
+</body>
+</html>

@@ -1,0 +1,3 @@
+-Initially we have to setup node npm init,index.js,expressjs,path
+- selecting port, npm i nodemon -d=> dev dependencies=> not install deployment
+-

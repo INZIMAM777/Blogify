@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <%- include('./partials/head') %>
+</head>
+
+<body>
+    <%- include('./nav.ejs') %>
+        <%= JSON.stringify(user) %>
+            <%= JSON.stringify(blog) %>
+
+                <div class="container">
+  <div class="row g-4">
+    <% blogs.forEach(blog => { %>
+      <div class="col-md-4">
+        <div class="card shadow-sm mb-4 h-100">
+          <img src="<%= blog.coverUrl %>" class="card-img-top" alt="<%= blog.title %>" style="height:200px; object-fit:cover;">
+          <div class="card-body">
+            <h5 class="card-title fw-bold"><%= blog.title %></h5>
+            <p class="card-text text-muted">
+              <%= (blog.body.length > 120 ? blog.body.substring(0, 120) + '...' : blog.body) %>
+            </p>
+            <a href="/blog/<%= blog._id %>" class="btn btn-primary btn-sm">View Blog</a>
+          </div>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+</div>                <%- include('./partials/script') %>
+</body>
+
+</html>

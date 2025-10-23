@@ -1,0 +1,139 @@
+part-1
+------------------------------------
+-Initially we have to setup node npm init,index.js,expressjs,path
+- selecting port, npm i nodemon -d=> dev dependencies=> not install deployment
+-view setup,ejs, 1.create user model, using schema pre function, createHmac,
+-schema pre save function using salt 16 bit hmac sha256 generate it from gpt or get it from stack overflow.
+-schema pre save func for hashing the password
+// Pre-save hook to hash password
+userSchema.pre("save", function (next) {
+  const user = this;
+
+  // Only hash if password is new or modified
+  if (!user.isModified("password")) return next();
+
+  try {
+    // Generate 16-byte random salt
+    user.salt = randomBytes(16).toString("hex");
+
+    // Hash password with HMAC-SHA256 using salt as key
+    const hash = createHmac("sha256", user.salt)
+      .update(user.password)
+      .digest("hex");
+
+    user.password = hash;
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
+
+-work under user router signup,signin get,post and create ejs page for all and link all under user router.
+-Do mongo db connection 
+
+-static function for user verification 
+userSchema.static('matchPassword',async function(email,password){
+    const user=await this.findOne({email});
+    if(!user) throw new Error('User not found');
+
+    const hash = createHmac("sha256", user.salt)
+      .update(password)
+      .digest("hex");
+
+    if(hash!==user.password){
+      throw new Error('Invalid Password');
+    }
+    return user;
+})
+
+part-2
+------------------------------------------------------------
+-Initiate services auth.js
+-generateToken, verifyToken
+const jwt=require('jsonwebtoken');
+const User=require('../models/user');
+
+const secret="$uperman@123"
+
+const generateToken=(user)=>{
+    const payload={
+        id:user._id,
+        email:user.email,
+        password:user.password,
+        role:user.role
+    };
+    return jwt.sign(payload,secret)
+}
+
+const verifyToken=(token)=>{
+    try{
+        const payload=jwt.verify(token,secret);
+        return payload;
+    }catch(err){
+        throw new Error('Invalid Token')   
+    }
+}
+
+module.exports={generateToken};
+
+- password matching is also generate token and verify token
+
+userSchema.static('matchPasswordAndGenerateToken',async function(email,password){
+    const user=await this.findOne({email});
+    if(!user) throw new Error('User not found');
+
+    const hash = createHmac("sha256", user.salt)
+      .update(password)
+      .digest("hex");
+
+    if(hash!==user.password){
+      throw new Error('Invalid Password');
+    }
+    
+    const token=generateToken(user);
+    return token;
+})
+
+-create middleware for check cookie and create req.user=>payload.
+function checkForAuthCookie(cookieName){
+    return(req,res,next)=>{
+        const tokenCookieValue=req.cookies[cookieName];
+        if(!tokenCookieValue){
+            next();
+        }
+        try{
+            const userPayload=verifyToken(tokenCookieValue);
+            req.user=userPayload;
+        }catch(err){
+            next()
+        }
+
+    }
+}
+
+- using this req.user from middleware use in nav bar or other view component.
+
+part3
+-----------------------------------------------------------
+-blog model creation
+-create add-blog page for add blog, create get,post router for blog/add-blog
+-initaite multer for upload file and save it to public/uploads/${user._id}
+-
+const multer  = require('multer');
+const path = require('path');
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.resolve(`./public/uploads/${req.user._id}`) )
+  },
+  filename: function (req, file, cb) {
+    const fileName=`${Date.now()}-${file.originalname}`
+    cb(null,fileName)
+  }
+})
+
+const upload = multer({ storage: storage })
+
+- In form write enctype="multipart/form-data"
+
+

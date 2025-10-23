@@ -1,0 +1,22 @@
+{
+  "name": "blogweb",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": " node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "bootstrap": "^5.3.8",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "mongoose": "^8.18.2",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}

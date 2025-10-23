@@ -1,0 +1,29 @@
+-Initially we have to setup node npm init,index.js,expressjs,path
+- selecting port, npm i nodemon -d=> dev dependencies=> not install deployment
+-view setup,ejs, 1.create user model, using schema pre function, createHmac,
+-schema pre save function using salt 16 bit hmac sha256 generate it from gpt or get it from stack overflow.
+// Pre-save hook to hash password
+userSchema.pre("save", function (next) {
+  const user = this;
+
+  // Only hash if password is new or modified
+  if (!user.isModified("password")) return next();
+
+  try {
+    // Generate 16-byte random salt
+    user.salt = randomBytes(16).toString("hex");
+
+    // Hash password with HMAC-SHA256 using salt as key
+    const hash = createHmac("sha256", user.salt)
+      .update(user.password)
+      .digest("hex");
+
+    user.password = hash;
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
+
+-work under user router signup,signin get,post and create ejs page for all and link all under user router.
+-Do mongo db connection 

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= blog.title %> - Blog Details</title>
+  <%- include('./partials/head') %>
+  <style>
+    /* Optional custom styles */
+    .comment-card {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 10px 15px;
+      margin-bottom: 15px;
+      background-color: #f9f9f9;
+    }
+    .comment-header img {
+      margin-right: 10px;
+    }
+    .blog-author img {
+      margin-right: 10px;
+    }
+    pre {
+      white-space: pre-wrap; /* wrap long lines */
+      word-wrap: break-word;
+      background-color: #f8f9fa;
+      padding: 10px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <%- include('./nav.ejs') %>
+
+  <div class="container mt-5">
+    <% if (!blog) { %>
+      <div class="alert alert-warning">
+        Blog not found.
+      </div>
+    <% } else { %>
+      <div class="card shadow-sm mb-4">
+        
+        <% if (blog.coverUrl) { %>
+          <img src="<%= blog.coverUrl %>" class="card-img-top" alt="<%= blog.title %>" style="height:300px; object-fit:cover;">
+        <% } else { %>
+          <img src="/images/default-cover.jpg" class="card-img-top" alt="No Cover" style="height:300px; object-fit:cover;">
+        <% } %>
+        <div class="card-body">
+          <h2 class="card-title fw-bold"><%= blog.title %></h2>
+          <p class="text-muted mb-2">
+            Posted on <%= blog.createdAt.toLocaleDateString() %>
+          </p>
+          <pre class="card-text"><%= blog.body %></pre>
+        </div>
+      </div>
+    <% } %>
+
+    <div class="d-flex align-items-center mb-4 blog-author">
+      <img src="<%= blog.createdBy?.profileImgUrl || '/images/default-profile.png' %>" 
+           alt="Author Image" style="width:50px; height:50px; border-radius:50%;">
+      <strong>Author: <%= blog.createdBy?.name || 'Unknown' %></strong>
+    </div>
+
+    <% if (locals.user) { %>
+      <div class="card mb-4 p-3">
+        <h4>Leave a Comment</h4>
+        <form action='/blog/comment/<%= blog._id %>' method="POST">
+          <div class="mb-3">
+            <textarea class="form-control" id="content" name="content" placeholder="Enter your comment" rows="3" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Add Comment</button>
+        </form>
+      </div>
+    <% } %>
+
+    <h3 class="mb-3">Comments (<%= comments.length %>)</h3>
+    <% if (comments.length === 0) { %>
+      <p class="text-muted">No comments yet. Be the first to comment!</p>
+    <% } %>
+
+    <% comments.forEach(comment => { %>
+      <div class="comment-card">
+        <div class="d-flex align-items-center comment-header mb-2">
+          <img src="<%= comment.createdBy?.profileImgUrl || '/images/default-profile.png' %>" 
+               alt="Commenter Image" style="width:35px; height:35px; border-radius:50%;">
+          <strong><%= comment.createdBy?.name || 'Unknown User' %></strong>
+          <small class="text-muted ms-2"><%= new Date(comment.createdAt).toLocaleString() %></small>
+        </div>
+        <pre><%= comment.content %></pre>
+      </div>
+    <% }) %>
+  </div>
+
+  <%- include('./partials/script') %>
+</body>
+</html>

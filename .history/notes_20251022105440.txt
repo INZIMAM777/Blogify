@@ -1,0 +1,1 @@
+-Initially we have to setup node npm init, 

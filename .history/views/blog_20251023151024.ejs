@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= blog.title %> - Blog Details</title>
+  <%- include('./partials/head') %>
+</head>
+<body>
+  <%- include('./nav.ejs') %>
+
+  <div class="container mt-5">
+    <% if (!blog) { %>
+      <div class="alert alert-warning">
+        Blog not found.
+      </div>
+    <% } else { %>
+      <div class="card shadow-sm">
+        <% if (blog.coverUrl) { %>
+          <img src="<%= blog.coverUrl %>" class="card-img-top" alt="<%= blog.title %>" style="height:300px; object-fit:cover;">
+        <% } else { %>
+          <img src="/images/default-cover.jpg" class="card-img-top" alt="No Cover" style="height:300px; object-fit:cover;">
+        <% } %>
+
+        <div class="card-body">
+          <h2 class="card-title fw-bold"><%= blog.title %></h2>
+          <p class="text-muted mb-2">
+            Posted on <%= blog.createdAt.toLocaleDateString() %>
+          </p>
+          <pre class="card-text"><%= blog.body %></pre>
+
+          <!-- <% if (user && String(user._id) === String(blog.createdBy)) { %>
+            <a href="/blog/edit/<%= blog._id %>" class="btn btn-warning btn-sm">Edit</a>
+            <a href="/blog/delete/<%= blog._id %>" class="btn btn-danger btn-sm">Delete</a>
+          <% } %> -->
+        </div>
+      </div>
+    <% } %>
+
+    <div class="mt-4">
+      <a href="/" class="btn btn-secondary btn-sm">Back to Home</a>
+    </div>
+  </div>
+  <div class="container">
+    <img src="<%= blog.createdBy.profileImgUrl %>" alt="Author Image" style="width:50px; height:50px; border-radius:50%;">
+    <p>Author: <%= blog.createdBy.name %> </p>
+  </div>
+  <% if (locals.user) { %>
+    <div>
+    <form action='/comment' method="POST">
+              <div class="mb-3">
+                <input type="content" class="form-control" id="content" name="content" placeholder="Enter Comment" required>
+                <button type="submit" class="btn btn-primary ">Add</button>
+              </div>
+    </form>
+  </div>
+   
+  <% } %>
+  
+
+  <%- include('./partials/script') %>
+</body>
+</html>

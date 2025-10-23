@@ -1,0 +1,6 @@
+const jwt=require('jsonwebtoken');
+const User=require('../models/user');
+
+const generateToken=(user)=>{
+    const payload=
+}
